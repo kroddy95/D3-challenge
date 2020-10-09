@@ -66,17 +66,7 @@ censusData.forEach(function(data){
     .attr("opacity", ".5")
     .attr('class', 'stateCircle');
 
-    chartGroup.append("g").selectAll("text")
-    .data(censusData)
-    .enter()
-    .append('text')
-    .attr("x", d => xLinearScale(d.healthcare))
-    .attr("y", d => yLinearScale(d.age))
-    .attr("font-size", "11px")
-    .style('text-anchor', "middle")
-    .text(function(d) {
-      return d.abbr;
-    })
+   
    
 
 //Initialize tool tip
