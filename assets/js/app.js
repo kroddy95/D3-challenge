@@ -56,20 +56,21 @@ censusData.forEach(function(data){
     .call(leftAxis);
 
 // Create Cirlces
-    var circlesGroup = chartGroup.append("g").selectAll("circle")
+    var circlesGroup = chartGroup.selectAll("circle")
     .data(censusData)
     .enter()
     .append("circle")
     .attr("cx", d => xLinearScale(d.healthcare))
     .attr("cy", d => yLinearScale(d.age))
     .attr("r", "15")
-    .attr("opacity", ".5")
+    .attr("opacity", "1")
     .attr('class', 'stateCircle');
 
-    chartGroup.append("g").selectAll("text")
+    texts = chartGroup.append("g").selectAll("text")
     .data(censusData)
     .enter()
     .append('text')
+    .attr('class', 'stateText')
     .attr("x", d => xLinearScale(d.healthcare))
     .attr("y", d => yLinearScale(d.age))
     .text(function(d) {
@@ -79,11 +80,10 @@ censusData.forEach(function(data){
 
 //Initialize tool tip
   var toolTip = d3.tip()
-    .attr("class", "tooltip")
+    .attr("class", "d3-tip")
     .offset([70, -60])
-    .html(function(d){
-      var popup = d.state +'<hr>Healthcare: ' + d.healthcare + '% <br> Median Age: ' + d.age;
-      return popup
+    .html(function(d){ 
+      return d.state +'<br>Healthcare: ' + d.healthcare + '% <br> Median Age: ' + d.age;
     });
 
 //Create tooltop in the chart
