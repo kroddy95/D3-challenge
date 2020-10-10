@@ -2,7 +2,7 @@
 var svgWidth = 960;
 var svgHeight = 660;
 
-//Margins as an object
+//Margins
 var margin = {
   top: 20,
   right: 30,
@@ -20,7 +20,7 @@ var svg = d3.select("#scatter")
   .attr("height", svgHeight)
   .attr("width", svgWidth);
 
-// Append a group to the SVG area 
+//Append group to the SVG area 
 var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
@@ -28,7 +28,7 @@ var chartGroup = svg.append("g")
 d3.csv("../assets/data/data.csv").then(function(censusData){
   console.log(censusData);
 
-  //Parse Data
+  //Get the healthcare and age data
   censusData.forEach(function(data){
     data.healthcare = +data.healthcare;
     data.age = +data.age;
@@ -47,7 +47,7 @@ d3.csv("../assets/data/data.csv").then(function(censusData){
   var bottomAxis = d3.axisBottom(xLinearScale);
   var leftAxis = d3.axisLeft(yLinearScale);
 
-  //Append Axis to the chart
+  //Append axis to the chart
   chartGroup.append("g")
     .attr("transform", `translate(0, ${height})`)
     .call(bottomAxis);
@@ -55,7 +55,7 @@ d3.csv("../assets/data/data.csv").then(function(censusData){
     chartGroup.append("g")  
     .call(leftAxis);
 
-  // Create Cirlces
+  //Create cirlces
   var circlesGroup = chartGroup.selectAll("circle")
     .data(censusData)
     .enter()
@@ -66,6 +66,7 @@ d3.csv("../assets/data/data.csv").then(function(censusData){
     .attr("opacity", "1")
     .attr('class', 'stateCircle');
 
+  //Add the state abbreviations to the circles
   chartGroup.append("g").selectAll("text")
     .data(censusData)
     .enter()
@@ -77,7 +78,7 @@ d3.csv("../assets/data/data.csv").then(function(censusData){
       return d.abbr;
     })
    
-  //Initialize tool tip
+  //Create tool tip
   var toolTip = d3.tip()
     .attr("class", "d3-tip")
     .offset([-5, 0])
@@ -85,10 +86,10 @@ d3.csv("../assets/data/data.csv").then(function(censusData){
       return d.state +'<br>Without Healthcare: ' + d.healthcare + '% <br> Median Age: ' + d.age;
     });
 
-  //Create tooltop in the chart
+  //Get tooltip in the chart
   chartGroup.call(toolTip);
 
-  //Create event listeners to show and hide tooltip
+  //Create triggers to show and hide tooltip
   circlesGroup.on("mouseover", function(data){
     toolTip.show(data, this);
   })
@@ -97,7 +98,7 @@ d3.csv("../assets/data/data.csv").then(function(censusData){
     toolTip.hide(data);
   });
 
-  // Create axis labels
+  //Create axis labels
   chartGroup.append("text")
     .attr("transform", "rotate(-90)")
     .attr("y", 0 - margin.left + 40)
